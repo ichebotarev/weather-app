@@ -2,13 +2,14 @@ import axios from "axios";
 import { useState } from "react";
 import { Button } from "reactstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
+import "./WeatherSearch.css";
 import "./.env";
+import WeatherCard from "./WeatherCard";
 
 export default function WeatherSearch() {
 	const [weather, setWeather] = useState("");
 	const [city, setCity] = useState("");
 	const apiKey = "5275784f085a4e1dccaf89f70f9eaef2";
-	console.log(apiKey);
 
 	const apiCall = async (e) => {
 		e.preventDefault();
@@ -26,28 +27,9 @@ export default function WeatherSearch() {
 
 		setCity(res.data.name);
 	};
-	let k = weather.temp;
-	let C = k - 273.15;
-
-	const Weath = () => {
-		return (
-			<div>
-				<div className="winfo">
-					Weather information for {city}
-					<hr></hr>
-				</div>
-				<div className="Weath">
-					<div className="welement">Weather : {weather.descp}</div>
-					<div className="welement">Temperature : {C.toFixed(2)} &#8451;</div>
-					<div className="welement">Humidity :{weather.humidity} %</div>
-					<div className="welement">Pressure : {weather.press} mb</div>
-				</div>
-			</div>
-		);
-	};
 
 	return (
-		<>
+		<div className="weather-wrapper">
 			<div className="weathhead">Weather Info</div>
 			<div className="mainweather">
 				<div className="weather">
@@ -58,9 +40,9 @@ export default function WeatherSearch() {
 						</Button>
 					</form>
 
-					{weather && <Weath />}
+					{weather && <WeatherCard weather={weather} city={city} />}
 				</div>
 			</div>
-		</>
+		</div>
 	);
 }

@@ -1,14 +1,21 @@
-const express = require('express');
-const cors = require('cors')
-const app = express();
+import { useState } from 'react';
 
-app.use(cors());
+export default function useToken() {
+  const getToken = () => {
+    const tokenString = localStorage.getItem('token');
+    const userToken = JSON.parse(tokenString);
+    return userToken?.token
+  };
 
-app.use('/login', (req, res) => {
-  res.send({
-    token: 'password'
-  });
-});
+  const [token, setToken] = useState(getToken());
 
+  const saveToken = userToken => {
+    localStorage.setItem('token', JSON.stringify(userToken));
+    setToken(userToken.token);
+  };
 
-app.listen(8080, () => console.log('API is running on http://localhost:8080/login'));
+  return {
+    setToken: saveToken,
+    token
+  }
+}
